@@ -5,7 +5,7 @@ namespace ResponseWrapper;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-class Response
+class Response implements \RpContracts\Response
 {
     /**
      * @var string|null

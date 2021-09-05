@@ -119,7 +119,7 @@ class Response implements \RpContracts\Response
     /**
      * @return int
      */
-    public function getResponseCode() : int
+    public function getStatusCode() : int
     {
         return $this->response->getStatusCode();
     }

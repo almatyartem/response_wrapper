@@ -100,7 +100,7 @@ class Response implements \RpContracts\Response
      */
     public function isSuccess() : bool
     {
-        return (bool)$this->responseContent;
+        return ($this->getStatusCode() == 200);
     }
 
     /**

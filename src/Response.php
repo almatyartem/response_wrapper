@@ -8,9 +8,14 @@ use Throwable;
 class Response implements \RpContracts\Response
 {
     /**
+     * @var ResponseInterface|null
+     */
+    protected ?ResponseInterface $response = null;
+
+    /**
      * @var string|null
      */
-    protected ?string $response;
+    protected ?string $responseContent;
 
     /**
      * @var Throwable[]
@@ -24,7 +29,8 @@ class Response implements \RpContracts\Response
      */
     public function __construct(ResponseInterface $response = null, array $errorsBag = null)
     {
-        $this->response = ($response ? $response->getBody()->getContents() : null);
+        $this->response = $response;
+        $this->responseContent = ($response ? $response->getBody()->getContents() : null);
         $this->errorsBag = $errorsBag;
     }
 
@@ -33,7 +39,7 @@ class Response implements \RpContracts\Response
      */
     public function getRawContents() : ?string
     {
-        return $this->response;
+        return $this->responseContent;
     }
 
     /**
@@ -41,7 +47,7 @@ class Response implements \RpContracts\Response
      */
     public function getContents() : ?array
     {
-        return $this->response ? @json_decode($this->response, true) : null;
+        return $this->responseContent ? @json_decode($this->responseContent, true) : null;
     }
 
     /**
@@ -94,7 +100,7 @@ class Response implements \RpContracts\Response
      */
     public function isSuccess() : bool
     {
-        return (bool)$this->response;
+        return (bool)$this->responseContent;
     }
 
     /**
@@ -108,5 +114,13 @@ class Response implements \RpContracts\Response
         }
 
         return null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getResponseCode() : int
+    {
+        return $this->response->getStatusCode();
     }
 }

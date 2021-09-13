@@ -121,6 +121,20 @@ class Response implements \RpContracts\Response
      */
     public function getStatusCode() : int
     {
-        return $this->response->getStatusCode();
+        if($this->response)
+        {
+            return $this->response->getStatusCode();
+        }
+
+
+        if($exception = $this->getLastException())
+        {
+            try {
+                return $exception->getResponse()->getStatusCode();
+            }
+            catch(Throwable $exception){}
+        }
+
+        return 500;
     }
 }

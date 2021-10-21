@@ -47,7 +47,12 @@ class Response implements \RpContracts\Response
      */
     public function getContents() : ?array
     {
-        return $this->responseContent ? @json_decode($this->responseContent, true) : null;
+        if(!$this->errorsBag and $this->responseContent)
+        {
+            return @json_decode($this->responseContent, true);
+        }
+
+        return null;
     }
 
     /**
